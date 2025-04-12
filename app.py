@@ -13,7 +13,9 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             departure_station TEXT NOT NULL,
             arrival_station TEXT NOT NULL,
-            departure_time TEXT NOT NULL
+            departure_time TEXT NOT NULL,
+            nickname TEXT,
+            contact_info TEXT
         )
     ''')
     conn.commit()
@@ -31,11 +33,13 @@ def post_trip():
         departure_station = request.form['departure_station']
         arrival_station = request.form['arrival_station']
         departure_time = request.form['departure_time']
+        nickname = request.form['nickname']
+        contact_info = request.form['contact_info']
 
         conn = sqlite3.connect('trips.db')
         c = conn.cursor()
-        c.execute('INSERT INTO trips (departure_station, arrival_station, departure_time) VALUES (?, ?, ?)',
-                  (departure_station, arrival_station, departure_time))
+        c.execute('INSERT INTO trips (departure_station, arrival_station, departure_time, nickname, contact_info) VALUES (?, ?, ?, ?, ?)',
+                  (departure_station, arrival_station, departure_time, nickname, contact_info))
         conn.commit()
         conn.close()
 
@@ -52,13 +56,13 @@ def find_trip():
 
         conn = sqlite3.connect('trips.db')
         c = conn.cursor()
-        c.execute('SELECT departure_station, arrival_station, departure_time FROM trips')
+        c.execute('SELECT departure_station, arrival_station, departure_time, nickname, contact_info FROM trips')
         all_trips = c.fetchall()
         conn.close()
 
         matches = []
         for trip in all_trips:
-            trip_departure, trip_arrival, trip_time = trip
+            trip_departure, trip_arrival, trip_time, nickname, contact_info = trip
             trip_time_dt = datetime.fromisoformat(trip_time)
 
             if (trip_departure.lower() == departure_station.lower() and
@@ -67,7 +71,9 @@ def find_trip():
                 matches.append({
                     'departure_station': trip_departure,
                     'arrival_station': trip_arrival,
-                    'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M')
+                    'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M'),
+                    'nickname': nickname,
+                    'contact_info': contact_info
                 })
 
         return render_template('match_results.html', matches=matches)

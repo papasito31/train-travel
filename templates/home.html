@@ -1,98 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Train Travel Together</title>
+    <title>Travel Buddy NL</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-blue-100 min-h-screen flex flex-col items-center justify-center">
+<body class="bg-gradient-to-br from-blue-100 to-purple-200 min-h-screen flex flex-col items-center justify-center">
 
-    <h1 class="text-4xl font-bold mb-4">Welcome to Train Travel Together!</h1>
-    <p class="text-lg mb-8">Find people traveling on the same train in the Netherlands!</p>
+    <h1 class="text-5xl font-bold mb-6">🚂 Travel Buddy NL</h1>
+    <p class="text-lg mb-10 text-gray-700">Find travel buddies for your train journeys in the Netherlands!</p>
 
-    <div class="space-x-4">
-        <a href="/post-trip" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <div class="space-x-6">
+        <a href="/post-trip" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-xl">
             Post a Trip
         </a>
-        <a href="/find-trip" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            Find a Group
+        <a href="/find-trip" class="bg-green-600 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-xl">
+            Find a Buddy
         </a>
     </div>
 
-</body>
-</html>
-post_trip.html
-html
-Copy
-Edit
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Post a Trip</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-
-    <h1 class="text-3xl font-bold mb-6">Post a Train Trip</h1>
-
-    <form method="POST" class="bg-white p-6 rounded shadow-md space-y-4">
-        <div>
-            <label>Departure Station:</label><br>
-            <input type="text" name="departure_station" class="border rounded p-2 w-full" required>
-        </div>
-
-        <div>
-            <label>Arrival Station:</label><br>
-            <input type="text" name="arrival_station" class="border rounded p-2 w-full" required>
-        </div>
-
-        <div>
-            <label>Departure Time:</label><br>
-            <input type="datetime-local" name="departure_time" class="border rounded p-2 w-full" required>
-        </div>
-
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Post Trip
-        </button>
-    </form>
-
-    <br><a href="/" class="text-blue-700 underline">Back to Home</a>
-</body>
-</html>
-find_trip.html
-html
-Copy
-Edit
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Find a Group</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-
-    <h1 class="text-3xl font-bold mb-6">Find a Train Group</h1>
-
-    <form method="POST" class="bg-white p-6 rounded shadow-md space-y-4">
-        <div>
-            <label>Departure Station:</label><br>
-            <input type="text" name="departure_station" class="border rounded p-2 w-full" required>
-        </div>
-
-        <div>
-            <label>Arrival Station:</label><br>
-            <input type="text" name="arrival_station" class="border rounded p-2 w-full" required>
-        </div>
-
-        <div>
-            <label>Preferred Departure Time:</label><br>
-            <input type="datetime-local" name="departure_time" class="border rounded p-2 w-full" required>
-        </div>
-
-        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            Find Group
-        </button>
-    </form>
-
-    <br><a href="/" class="text-blue-700 underline">Back to Home</a>
 </body>
 </html>
