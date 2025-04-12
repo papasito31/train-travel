@@ -61,24 +61,35 @@ def find_trip():
         conn.close()
 
         matches = []
+        other_matches = []
+
         for trip in all_trips:
             trip_departure, trip_arrival, trip_time, nickname, contact_info = trip
             trip_time_dt = datetime.fromisoformat(trip_time)
 
             if (trip_departure.lower() == departure_station.lower() and
-                trip_arrival.lower() == arrival_station.lower() and
-                abs((trip_time_dt - departure_time).total_seconds()) <= 1800):
-                matches.append({
-                    'departure_station': trip_departure,
-                    'arrival_station': trip_arrival,
-                    'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M'),
-                    'nickname': nickname,
-                    'contact_info': contact_info
-                })
+                trip_arrival.lower() == arrival_station.lower()):
+                
+                # Check tight match first (±30 minutes)
+                if abs((trip_time_dt - departure_time).total_seconds()) <= 1800:
+                    matches.append({
+                        'departure_station': trip_departure,
+                        'arrival_station': trip_arrival,
+                        'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M'),
+                        'nickname': nickname,
+                        'contact_info': contact_info
+                    })
 
-        return render_template('match_results.html', matches=matches)
+                # If not tight time, check same day
+                elif trip_time_dt.date() == departure_time.date():
+                    other_matches.append({
+                        'departure_station': trip_departure,
+                        'arrival_station': trip_arrival,
+                        'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M'),
+                        'nickname': nickname,
+                        'contact_info': contact_info
+                    })
+
+        return render_template('match_results.html', matches=matches, other_matches=other_matches)
 
     return render_template('find_trip.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)

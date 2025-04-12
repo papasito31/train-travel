@@ -28,6 +28,7 @@
         </div>
 
         {% if matches %}
+            <h3 class="text-2xl font-semibold text-green-700 mb-2">🎯 Exact Matches (Same Time ±30 min)</h3>
             <div class="space-y-6 w-full max-w-2xl">
                 {% for trip in matches %}
                     <div class="bg-white p-6 rounded-xl shadow-md transform hover:scale-105 transition">
@@ -38,10 +39,28 @@
                     </div>
                 {% endfor %}
             </div>
-        {% else %}
+        {% endif %}
+
+        {% if other_matches %}
+            <div class="mt-12 w-full max-w-2xl">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-2">🕑 Other Trips on Same Day</h3>
+                <div class="space-y-6">
+                    {% for trip in other_matches %}
+                        <div class="bg-white p-6 rounded-xl shadow-md transform hover:scale-105 transition">
+                            <p><strong>{{ trip.departure_station }}</strong> → <strong>{{ trip.arrival_station }}</strong></p>
+                            <p>Departure: {{ trip.departure_time }}</p>
+                            <p>Nickname: {{ trip.nickname }}</p>
+                            <p>Contact Info: {{ trip.contact_info }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not matches and not other_matches %}
             <!-- No Matches Message -->
             <div class="bg-white p-8 rounded-xl shadow-md text-center max-w-md space-y-4">
-                <h3 class="text-2xl font-bold text-purple-700">😢 Oops, no matches found!</h3>
+                <h3 class="text-2xl font-bold text-purple-700">😢 Oops, no matches today!</h3>
                 <p class="text-gray-700">Looks like you're the pioneer today! 🚀</p>
                 <p class="text-gray-700">Post your trip now — others are waiting for a hero like you! 💪</p>
                 <a href="/post-trip" class="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-6 rounded-xl transform hover:scale-105 transition inline-block mt-4">
