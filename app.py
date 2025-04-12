@@ -57,4 +57,22 @@ def find_trip():
         conn.close()
 
         matches = []
-        for trip
+        for trip in all_trips:
+            trip_departure, trip_arrival, trip_time = trip
+            trip_time_dt = datetime.fromisoformat(trip_time)
+
+            if (trip_departure.lower() == departure_station.lower() and
+                trip_arrival.lower() == arrival_station.lower() and
+                abs((trip_time_dt - departure_time).total_seconds()) <= 1800):
+                matches.append({
+                    'departure_station': trip_departure,
+                    'arrival_station': trip_arrival,
+                    'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M')
+                })
+
+        return render_template('match_results.html', matches=matches)
+
+    return render_template('find_trip.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
