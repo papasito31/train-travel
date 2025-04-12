@@ -3,98 +3,116 @@
 <head>
     <title>Post a Trip - Travel Buddy NL</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
-<body class="bg-blue-50 min-h-screen flex flex-col items-center justify-center">
+<body class="bg-blue-50 min-h-screen">
 
-    <h1 class="text-3xl font-bold mb-6">🚆 Post a Trip</h1>
-
-    <form method="POST" class="bg-white p-8 rounded-xl shadow-md w-full max-w-md space-y-4">
-
-        <div>
-            <label>Departure Station:</label><br>
-            <select name="departure_station" class="border rounded w-full p-2" required>
-                <option value="">Select Departure Station</option>
-                <option>Amsterdam Centraal</option>
-                <option>Rotterdam Centraal</option>
-                <option>Utrecht Centraal</option>
-                <option>Den Haag Centraal</option>
-                <option>Eindhoven</option>
-                <option>Maastricht</option>
-                <option>Groningen</option>
-                <option>Arnhem</option>
-                <option>Zwolle</option>
-                <option>Leiden Centraal</option>
-                <option>Breda</option>
-                <option>Haarlem</option>
-                <option>Amersfoort Centraal</option>
-                <option>Tilburg</option>
-                <option>Nijmegen</option>
-                <option>Delft</option>
-                <option>'s-Hertogenbosch</option>
-                <option>Almere Centrum</option>
-                <option>Apeldoorn</option>
-                <option>Leeuwarden</option>
-                <option>Hilversum</option>
-                <option>Venlo</option>
-                <option>Dordrecht</option>
-                <option>Roermond</option>
-                <option>Deventer</option>
-            </select>
+    <!-- Navbar -->
+    <nav class="bg-blue-500 p-4 flex justify-between items-center shadow-md sticky top-0 z-10">
+        <h1 class="text-white font-bold text-xl">🚂 Travel Buddy NL</h1>
+        <div class="space-x-4">
+            <a href="/" class="text-white hover:underline">Home</a>
+            <a href="/post-trip" class="text-white hover:underline">Post Trip</a>
+            <a href="/find-trip" class="text-white hover:underline">Find Buddy</a>
         </div>
+    </nav>
 
-        <div>
-            <label>Arrival Station:</label><br>
-            <select name="arrival_station" class="border rounded w-full p-2" required>
-                <option value="">Select Arrival Station</option>
-                <option>Amsterdam Centraal</option>
-                <option>Rotterdam Centraal</option>
-                <option>Utrecht Centraal</option>
-                <option>Den Haag Centraal</option>
-                <option>Eindhoven</option>
-                <option>Maastricht</option>
-                <option>Groningen</option>
-                <option>Arnhem</option>
-                <option>Zwolle</option>
-                <option>Leiden Centraal</option>
-                <option>Breda</option>
-                <option>Haarlem</option>
-                <option>Amersfoort Centraal</option>
-                <option>Tilburg</option>
-                <option>Nijmegen</option>
-                <option>Delft</option>
-                <option>'s-Hertogenbosch</option>
-                <option>Almere Centrum</option>
-                <option>Apeldoorn</option>
-                <option>Leeuwarden</option>
-                <option>Hilversum</option>
-                <option>Venlo</option>
-                <option>Dordrecht</option>
-                <option>Roermond</option>
-                <option>Deventer</option>
-            </select>
-        </div>
+    <!-- Main Content -->
+    <div class="flex flex-col items-center justify-center mt-10">
+        <h2 class="text-3xl font-bold mb-6">🚆 Post a Trip</h2>
 
-        <div>
-            <label>Departure Time:</label><br>
-            <input type="datetime-local" name="departure_time" class="border rounded w-full p-2" required>
-        </div>
+        <form method="POST" class="bg-white p-8 rounded-xl shadow-md w-full max-w-md space-y-4" x-data="{ posted: false }" @submit="posted = true">
+            <div>
+                <label>Departure Station:</label><br>
+                <select name="departure_station" class="border rounded w-full p-2" required>
+                    <option value="">Select Departure Station</option>
+                    <option>Amsterdam Centraal</option>
+                    <option>Rotterdam Centraal</option>
+                    <option>Utrecht Centraal</option>
+                    <option>Den Haag Centraal</option>
+                    <option>Eindhoven</option>
+                    <option>Maastricht</option>
+                    <option>Groningen</option>
+                    <option>Arnhem</option>
+                    <option>Zwolle</option>
+                    <option>Leiden Centraal</option>
+                    <option>Breda</option>
+                    <option>Haarlem</option>
+                    <option>Amersfoort Centraal</option>
+                    <option>Tilburg</option>
+                    <option>Nijmegen</option>
+                    <option>Delft</option>
+                    <option>'s-Hertogenbosch</option>
+                    <option>Almere Centrum</option>
+                    <option>Apeldoorn</option>
+                    <option>Leeuwarden</option>
+                    <option>Hilversum</option>
+                    <option>Venlo</option>
+                    <option>Dordrecht</option>
+                    <option>Roermond</option>
+                    <option>Deventer</option>
+                </select>
+            </div>
 
-        <div>
-            <label>Nickname:</label><br>
-            <input type="text" name="nickname" class="border rounded w-full p-2" required>
-        </div>
+            <div>
+                <label>Arrival Station:</label><br>
+                <select name="arrival_station" class="border rounded w-full p-2" required>
+                    <option value="">Select Arrival Station</option>
+                    <!-- (Same options as Departure) -->
+                    <option>Amsterdam Centraal</option>
+                    <option>Rotterdam Centraal</option>
+                    <option>Utrecht Centraal</option>
+                    <option>Den Haag Centraal</option>
+                    <option>Eindhoven</option>
+                    <option>Maastricht</option>
+                    <option>Groningen</option>
+                    <option>Arnhem</option>
+                    <option>Zwolle</option>
+                    <option>Leiden Centraal</option>
+                    <option>Breda</option>
+                    <option>Haarlem</option>
+                    <option>Amersfoort Centraal</option>
+                    <option>Tilburg</option>
+                    <option>Nijmegen</option>
+                    <option>Delft</option>
+                    <option>'s-Hertogenbosch</option>
+                    <option>Almere Centrum</option>
+                    <option>Apeldoorn</option>
+                    <option>Leeuwarden</option>
+                    <option>Hilversum</option>
+                    <option>Venlo</option>
+                    <option>Dordrecht</option>
+                    <option>Roermond</option>
+                    <option>Deventer</option>
+                </select>
+            </div>
 
-        <div>
-            <label>Contact Info (Optional):</label><br>
-            <input type="text" name="contact_info" class="border rounded w-full p-2">
-        </div>
+            <div>
+                <label>Departure Time:</label><br>
+                <input type="datetime-local" name="departure_time" class="border rounded w-full p-2" required>
+            </div>
 
-        <button type="submit" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded w-full">
-            Post Trip
-        </button>
-    </form>
+            <div>
+                <label>Nickname:</label><br>
+                <input type="text" name="nickname" class="border rounded w-full p-2" required>
+            </div>
 
-    <br><a href="/" class="text-blue-700 underline">Back to Home</a>
+            <div>
+                <label>Contact Info (Optional):</label><br>
+                <input type="text" name="contact_info" class="border rounded w-full p-2">
+            </div>
+
+            <button type="submit" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded w-full transform hover:scale-105 transition">
+                Post Trip
+            </button>
+
+            <!-- Toast Notification -->
+            <div x-show="posted" class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded" role="alert">
+                ✅ Trip Posted Successfully!
+            </div>
+        </form>
+
+    </div>
 
 </body>
 </html>
