@@ -93,3 +93,10 @@ def find_trip():
         return render_template('match_results.html', matches=matches, other_matches=other_matches)
 
     return render_template('find_trip.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
