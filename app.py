@@ -3,9 +3,9 @@ import sqlite3
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # You can change this later
+app.secret_key = 'supersecretkey'
 
-# ✅ Initialize DB if not exists
+# Initialize DB
 def init_db():
     conn = sqlite3.connect('trips.db')
     c = conn.cursor()
@@ -24,12 +24,10 @@ def init_db():
 
 init_db()
 
-# ✅ Home route
 @app.route('/')
 def home():
     return render_template('home.html')
 
-# ✅ Post trip
 @app.route('/post-trip', methods=['GET', 'POST'])
 def post_trip():
     if request.method == 'POST':
@@ -55,7 +53,6 @@ def post_trip():
 
     return render_template('post_trip.html')
 
-# ✅ Find trip
 @app.route('/find-trip', methods=['GET', 'POST'])
 def find_trip():
     if request.method == 'POST':
@@ -70,6 +67,7 @@ def find_trip():
         conn.close()
 
         matches = []
+        flexible_matches = []
         other_matches = []
 
         for trip in trips:
@@ -77,8 +75,18 @@ def find_trip():
             trip_time = datetime.fromisoformat(trip_time_str)
 
             if trip_departure.lower() == departure.lower() and trip_arrival.lower() == arrival.lower():
-                if abs((trip_time - requested_time).total_seconds()) <= 1800:
+                time_diff = abs((trip_time - requested_time).total_seconds())
+
+                if time_diff <= 1800:
                     matches.append({
+                        'departure_station': trip_departure,
+                        'arrival_station': trip_arrival,
+                        'departure_time': trip_time.strftime('%Y-%m-%d %H:%M'),
+                        'nickname': nickname,
+                        'contact_info': contact_info
+                    })
+                elif time_diff <= 7200:
+                    flexible_matches.append({
                         'departure_station': trip_departure,
                         'arrival_station': trip_arrival,
                         'departure_time': trip_time.strftime('%Y-%m-%d %H:%M'),
@@ -94,11 +102,10 @@ def find_trip():
                         'contact_info': contact_info
                     })
 
-        return render_template('match_results.html', matches=matches, other_matches=other_matches)
+        return render_template('match_results.html', matches=matches, flexible_matches=flexible_matches, other_matches=other_matches)
 
     return render_template('find_trip.html')
 
-# ✅ About route
 @app.route('/about')
 def about():
     return render_template('about.html')
