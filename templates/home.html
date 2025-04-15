@@ -1,42 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Travel Buddy NL</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="relative bg-gradient-to-br from-purple-100 to-blue-200 min-h-screen text-gray-800 overflow-hidden">
+{% extends 'base.html' %}
 
-    <!-- Navbar -->
-    <nav class="bg-blue-500 p-4 flex justify-between items-center shadow-md sticky top-0 z-10">
-        <h1 class="text-white font-bold text-xl">Travel Buddy NL</h1>
-        <div class="space-x-4">
-            <a href="/" class="text-white hover:underline">Home</a>
-            <a href="/find-trip" class="text-white hover:underline">Find Buddy</a>
-            <a href="/post-trip" class="text-white hover:underline">Post Trip</a>
-            <a href="/about" class="text-white hover:underline">About</a>
-        </div>
-    </nav>
+{% block title %}Travel Buddy NL{% endblock %}
 
-    <!-- Main Content -->
-    <div class="relative z-10 flex flex-col items-center justify-center text-center mt-20 space-y-6">
-
-        <h2 class="text-4xl font-bold">Find a Buddy First! 🚂</h2>
-        <p class="text-lg text-gray-700 max-w-md">
-            Save money and make friends on your next train journey across the Netherlands!
-        </p>
-
-        <a href="/find-trip" class="bg-green-600 hover:bg-green-800 text-white font-bold py-4 px-8 rounded-xl text-xl transform hover:scale-105 transition">
-            Find a Travel Buddy
-        </a>
-
-        <p class="text-md text-gray-600 mt-6">
-            Can't find anyone?  
-            <a href="/post-trip" class="text-blue-600 font-bold underline hover:text-blue-800">
-                Post your trip here
-            </a>
-        </p>
-
-    </div>
-
-</body>
-</html>
+{% block content %}
+<section class="flex flex-col items-center justify-center text-center px-6 pt-28 pb-16">
+  <h2 class="text-5xl md:text-6xl font-bold leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-300 to-purple-400">
+    Group Travel. Student Smart.
+  </h2>
+  <p class="mt-6 text-lg md:text-xl max-w-2xl text-slate-300">
+    Meet people. Save money. Ride across the Netherlands — together.
+  </p>
+  <a href="/find-trip" class="mt-10 inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-full shadow transition-transform transform hover:scale-105">
+    Find Your Travel Buddy
+  </a>
+  <p class="mt-6 text-sm text-slate-400">
+    Can’t find anyone yet? <a href="/post-trip" class="text-blue-400 hover:underline font-medium">Post your trip here</a>
+  </p>
+</section>
+{% endblock %}

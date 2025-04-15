@@ -1,79 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Matches - Travel Buddy NL</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-purple-50 min-h-screen">
+{% extends 'base.html' %}
 
-    <!-- Navbar -->
-    <nav class="bg-blue-500 p-4 flex justify-between items-center shadow-md sticky top-0 z-10">
-    <h1 class="text-white font-bold text-xl">Travel Buddy NL</h1>
-    <div class="space-x-4">
-        <a href="/" class="text-white hover:underline">Home</a>
-        <a href="/find-trip" class="text-white hover:underline">Find Buddy</a>
-        <a href="/post-trip" class="text-white hover:underline">Post Trip</a>
-        <a href="/about" class="text-white hover:underline">About</a>
+{% block title %}Matching Results{% endblock %}
+
+{% block content %}
+<section class="px-6 pt-20">
+  <h2 class="text-4xl md:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-300 to-purple-400 mb-10">
+    Matching Results
+  </h2>
+
+  {% if matches or other_matches %}
+    <div class="grid gap-6 max-w-3xl mx-auto">
+      {% for match in matches %}
+      <div class="bg-slate-800 p-6 rounded-xl shadow-xl">
+        <p><span class="font-semibold text-blue-300">From:</span> {{ match.departure_station }}</p>
+        <p><span class="font-semibold text-blue-300">To:</span> {{ match.arrival_station }}</p>
+        <p><span class="font-semibold text-blue-300">Time:</span> {{ match.departure_time }}</p>
+        <p><span class="font-semibold text-blue-300">Buddy:</span> {{ match.nickname }}</p>
+        <p><span class="font-semibold text-blue-300">Contact:</span> {{ match.contact_info }}</p>
+      </div>
+      {% endfor %}
+
+      {% for match in other_matches %}
+      <div class="bg-slate-700 p-6 rounded-xl shadow-md">
+        <p><span class="font-semibold text-purple-300">From:</span> {{ match.departure_station }}</p>
+        <p><span class="font-semibold text-purple-300">To:</span> {{ match.arrival_station }}</p>
+        <p><span class="font-semibold text-purple-300">Time:</span> {{ match.departure_time }}</p>
+        <p><span class="font-semibold text-purple-300">Buddy:</span> {{ match.nickname }}</p>
+        <p><span class="font-semibold text-purple-300">Contact:</span> {{ match.contact_info }}</p>
+      </div>
+      {% endfor %}
     </div>
-</nav>
-
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="flex flex-col items-center justify-center mt-10 space-y-8">
-
-        <h2 class="text-3xl font-bold mb-4">🎯 Matching Trips</h2>
-
-        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 w-full max-w-2xl rounded-lg" role="alert">
-            <p class="font-bold">Disclaimer</p>
-            <p>The provided personal information is intended solely for organizing travel groups.  
-            Misuse, spam, or unauthorized use of contact details may result in legal consequences.</p>
-        </div>
-
-        {% if matches %}
-            <h3 class="text-2xl font-semibold text-green-700 mb-2">🎯 Exact Matches (Same Time ±30 min)</h3>
-            <div class="space-y-6 w-full max-w-2xl">
-                {% for trip in matches %}
-                    <div class="bg-white p-6 rounded-xl shadow-md transform hover:scale-105 transition">
-                        <p><strong>{{ trip.departure_station }}</strong> → <strong>{{ trip.arrival_station }}</strong></p>
-                        <p>Departure: {{ trip.departure_time }}</p>
-                        <p>Nickname: {{ trip.nickname }}</p>
-                        <p>Contact Info: {{ trip.contact_info }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% if other_matches %}
-            <div class="mt-12 w-full max-w-2xl">
-                <h3 class="text-2xl font-semibold text-blue-700 mb-2">🕑 Other Trips on Same Day</h3>
-                <div class="space-y-6">
-                    {% for trip in other_matches %}
-                        <div class="bg-white p-6 rounded-xl shadow-md transform hover:scale-105 transition">
-                            <p><strong>{{ trip.departure_station }}</strong> → <strong>{{ trip.arrival_station }}</strong></p>
-                            <p>Departure: {{ trip.departure_time }}</p>
-                            <p>Nickname: {{ trip.nickname }}</p>
-                            <p>Contact Info: {{ trip.contact_info }}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-
-        {% if not matches and not other_matches %}
-            <!-- No Matches Message -->
-            <div class="bg-white p-8 rounded-xl shadow-md text-center max-w-md space-y-4">
-                <h3 class="text-2xl font-bold text-purple-700">😢 Oops, no matches today!</h3>
-                <p class="text-gray-700">Looks like you're the pioneer today! 🚀</p>
-                <p class="text-gray-700">Post your trip now — others are waiting for a hero like you! 💪</p>
-                <a href="/post-trip" class="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-6 rounded-xl transform hover:scale-105 transition inline-block mt-4">
-                    ➡️ Post a Trip
-                </a>
-            </div>
-        {% endif %}
-
-    </div>
-
-</body>
-</html>
+  {% else %}
+    <p class="text-center text-slate-400 text-lg">No matching trips found. Try a different time or post your own!</p>
+  {% endif %}
+</section>
+{% endblock %}

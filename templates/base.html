@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}Travel Buddy NL{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen font-sans overflow-x-hidden">
+
+  <!-- Navbar -->
+  <nav class="flex items-center justify-between px-6 py-4 bg-slate-900 shadow-sm sticky top-0 z-50">
+    <h1 class="text-xl font-semibold tracking-tight text-white">Travel Buddy NL</h1>
+    <div class="space-x-6 text-sm font-medium">
+      <a href="/" class="hover:text-blue-400 transition">Home</a>
+      <a href="/find-trip" class="hover:text-blue-400 transition">Find Buddy</a>
+      <a href="/post-trip" class="hover:text-blue-400 transition">Post Trip</a>
+      <a href="/about" class="hover:text-blue-400 transition">About</a>
+    </div>
+  </nav>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="text-center bg-green-600 text-white py-3 mb-4 font-semibold">
+        {{ messages[0] }}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Content -->
+  <main class="fade-in">
+    {% block content %}{% endblock %}
+  </main>
+
+</body>
+</html>

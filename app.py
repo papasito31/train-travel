@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
-from datetime import datetime, timedelta
+from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # You can change this later
 
-# Veritabanı başlatma
+# ✅ Initialize DB if not exists
 def init_db():
     conn = sqlite3.connect('trips.db')
     c = conn.cursor()
@@ -23,69 +24,72 @@ def init_db():
 
 init_db()
 
+# ✅ Home route
 @app.route('/')
 def home():
     return render_template('home.html')
 
+# ✅ Post trip
 @app.route('/post-trip', methods=['GET', 'POST'])
 def post_trip():
     if request.method == 'POST':
-        departure_station = request.form['departure_station']
-        arrival_station = request.form['arrival_station']
-        departure_time = request.form['departure_time']
-        nickname = request.form['nickname']
-        contact_info = request.form['contact_info']
+        data = {
+            'departure_station': request.form['departure_station'],
+            'arrival_station': request.form['arrival_station'],
+            'departure_time': request.form['departure_time'],
+            'nickname': request.form['nickname'],
+            'contact_info': request.form['contact_info']
+        }
 
         conn = sqlite3.connect('trips.db')
         c = conn.cursor()
-        c.execute('INSERT INTO trips (departure_station, arrival_station, departure_time, nickname, contact_info) VALUES (?, ?, ?, ?, ?)',
-                  (departure_station, arrival_station, departure_time, nickname, contact_info))
+        c.execute('''
+            INSERT INTO trips (departure_station, arrival_station, departure_time, nickname, contact_info)
+            VALUES (:departure_station, :arrival_station, :departure_time, :nickname, :contact_info)
+        ''', data)
         conn.commit()
         conn.close()
 
+        flash('✅ Trip successfully posted!')
         return redirect(url_for('home'))
 
     return render_template('post_trip.html')
 
+# ✅ Find trip
 @app.route('/find-trip', methods=['GET', 'POST'])
 def find_trip():
     if request.method == 'POST':
-        departure_station = request.form['departure_station']
-        arrival_station = request.form['arrival_station']
-        departure_time = datetime.fromisoformat(request.form['departure_time'])
+        departure = request.form['departure_station']
+        arrival = request.form['arrival_station']
+        requested_time = datetime.fromisoformat(request.form['departure_time'])
 
         conn = sqlite3.connect('trips.db')
         c = conn.cursor()
         c.execute('SELECT departure_station, arrival_station, departure_time, nickname, contact_info FROM trips')
-        all_trips = c.fetchall()
+        trips = c.fetchall()
         conn.close()
 
         matches = []
         other_matches = []
 
-        for trip in all_trips:
-            trip_departure, trip_arrival, trip_time, nickname, contact_info = trip
-            trip_time_dt = datetime.fromisoformat(trip_time)
+        for trip in trips:
+            trip_departure, trip_arrival, trip_time_str, nickname, contact_info = trip
+            trip_time = datetime.fromisoformat(trip_time_str)
 
-            if (trip_departure.lower() == departure_station.lower() and
-                trip_arrival.lower() == arrival_station.lower()):
-                
-                # Check tight match first (±30 minutes)
-                if abs((trip_time_dt - departure_time).total_seconds()) <= 1800:
+            if trip_departure.lower() == departure.lower() and trip_arrival.lower() == arrival.lower():
+                if abs((trip_time - requested_time).total_seconds()) <= 1800:
                     matches.append({
                         'departure_station': trip_departure,
                         'arrival_station': trip_arrival,
-                        'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M'),
+                        'departure_time': trip_time.strftime('%Y-%m-%d %H:%M'),
                         'nickname': nickname,
                         'contact_info': contact_info
                     })
-
-                # If not tight time, check same day
-                elif trip_time_dt.date() == departure_time.date():
+                elif trip_time.date() == requested_time.date():
                     other_matches.append({
                         'departure_station': trip_departure,
                         'arrival_station': trip_arrival,
-                        'departure_time': trip_time_dt.strftime('%Y-%m-%d %H:%M'),
+                        'departure_time': trip_time.strftime('%Y-%m-%d %H:%M'),
                         'nickname': nickname,
                         'contact_info': contact_info
                     })
@@ -94,6 +98,7 @@ def find_trip():
 
     return render_template('find_trip.html')
 
+# ✅ About route
 @app.route('/about')
 def about():
     return render_template('about.html')

@@ -1,107 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Find a Buddy - Travel Buddy NL</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-green-50 min-h-screen">
+{% extends 'base.html' %}
 
-    <!-- Navbar -->
-   <nav class="bg-blue-500 p-4 flex justify-between items-center shadow-md sticky top-0 z-10">
-    <h1 class="text-white font-bold text-xl">Travel Buddy NL</h1>
-    <div class="space-x-4">
-        <a href="/" class="text-white hover:underline">Home</a>
-        <a href="/find-trip" class="text-white hover:underline">Find Buddy</a>
-        <a href="/post-trip" class="text-white hover:underline">Post Trip</a>
-        <a href="/about" class="text-white hover:underline">About</a>
-    </div>
-</nav>
+{% block title %}Find a Travel Buddy{% endblock %}
 
-        </div>
-    </nav>
+{% block content %}
+<section class="flex flex-col items-center justify-center text-center px-6 pt-20">
+  <h2 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-300 to-purple-400 mb-8">
+    Find a Travel Buddy
+  </h2>
 
-    <!-- Main Content -->
-    <div class="flex flex-col items-center justify-center mt-10">
-        <h2 class="text-3xl font-bold mb-6">🚆 Find a Travel Buddy</h2>
-
-        <form method="POST" class="bg-white p-8 rounded-xl shadow-md w-full max-w-md space-y-4">
-            <div>
-                <label>Departure Station:</label><br>
-                <select name="departure_station" class="border rounded w-full p-2" required>
-                    <option value="">Select Departure Station</option>
-                    <!-- Same station list -->
-                    <option>Amsterdam Centraal</option>
-                    <option>Rotterdam Centraal</option>
-                    <option>Utrecht Centraal</option>
-                    <option>Den Haag Centraal</option>
-                    <option>Eindhoven</option>
-                    <option>Maastricht</option>
-                    <option>Groningen</option>
-                    <option>Arnhem</option>
-                    <option>Zwolle</option>
-                    <option>Leiden Centraal</option>
-                    <option>Breda</option>
-                    <option>Haarlem</option>
-                    <option>Amersfoort Centraal</option>
-                    <option>Tilburg</option>
-                    <option>Nijmegen</option>
-                    <option>Delft</option>
-                    <option>'s-Hertogenbosch</option>
-                    <option>Almere Centrum</option>
-                    <option>Apeldoorn</option>
-                    <option>Leeuwarden</option>
-                    <option>Hilversum</option>
-                    <option>Venlo</option>
-                    <option>Dordrecht</option>
-                    <option>Roermond</option>
-                    <option>Deventer</option>
-                </select>
-            </div>
-
-            <div>
-                <label>Arrival Station:</label><br>
-                <select name="arrival_station" class="border rounded w-full p-2" required>
-                    <option value="">Select Arrival Station</option>
-                    <!-- Same station list -->
-                    <option>Amsterdam Centraal</option>
-                    <option>Rotterdam Centraal</option>
-                    <option>Utrecht Centraal</option>
-                    <option>Den Haag Centraal</option>
-                    <option>Eindhoven</option>
-                    <option>Maastricht</option>
-                    <option>Groningen</option>
-                    <option>Arnhem</option>
-                    <option>Zwolle</option>
-                    <option>Leiden Centraal</option>
-                    <option>Breda</option>
-                    <option>Haarlem</option>
-                    <option>Amersfoort Centraal</option>
-                    <option>Tilburg</option>
-                    <option>Nijmegen</option>
-                    <option>Delft</option>
-                    <option>'s-Hertogenbosch</option>
-                    <option>Almere Centrum</option>
-                    <option>Apeldoorn</option>
-                    <option>Leeuwarden</option>
-                    <option>Hilversum</option>
-                    <option>Venlo</option>
-                    <option>Dordrecht</option>
-                    <option>Roermond</option>
-                    <option>Deventer</option>
-                </select>
-            </div>
-
-            <div>
-                <label>Preferred Departure Time:</label><br>
-                <input type="datetime-local" name="departure_time" class="border rounded w-full p-2" required>
-            </div>
-
-            <button type="submit" class="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-4 rounded w-full transform hover:scale-105 transition">
-                Find Buddy
-            </button>
-        </form>
-
+  <form method="POST" action="/find-trip" class="bg-slate-800 p-8 rounded-xl shadow-xl w-full max-w-md space-y-6">
+    
+    <div class="text-left">
+      <label for="departure_station" class="block text-sm font-medium text-slate-300">Departure Station</label>
+      <select name="departure_station" required class="mt-1 block w-full px-4 py-2 bg-slate-700 text-white rounded-lg">
+        <option value="">Select a station</option>
+        <option>Amsterdam Centraal</option>
+        <option>Utrecht Centraal</option>
+        <option>Rotterdam Centraal</option>
+        <option>The Hague HS</option>
+        <option>Leiden Centraal</option>
+        <option>Eindhoven</option>
+        <option>Maastricht</option>
+        <option>Groningen</option>
+        <option>Zwolle</option>
+        <option>Arnhem Centraal</option>
+        <option>Den Bosch</option>
+        <option>Delft</option>
+        <option>Amersfoort</option>
+        <option>Tilburg</option>
+        <option>Nijmegen</option>
+      </select>
     </div>
 
-</body>
-</html>
+    <div class="text-left">
+      <label for="arrival_station" class="block text-sm font-medium text-slate-300">Arrival Station</label>
+      <select name="arrival_station" required class="mt-1 block w-full px-4 py-2 bg-slate-700 text-white rounded-lg">
+        <option value="">Select a station</option>
+        <option>Amsterdam Centraal</option>
+        <option>Utrecht Centraal</option>
+        <option>Rotterdam Centraal</option>
+        <option>The Hague HS</option>
+        <option>Leiden Centraal</option>
+        <option>Eindhoven</option>
+        <option>Maastricht</option>
+        <option>Groningen</option>
+        <option>Zwolle</option>
+        <option>Arnhem Centraal</option>
+        <option>Den Bosch</option>
+        <option>Delft</option>
+        <option>Amersfoort</option>
+        <option>Tilburg</option>
+        <option>Nijmegen</option>
+      </select>
+    </div>
+
+    <div class="text-left">
+      <label for="departure_time" class="block text-sm font-medium text-slate-300">Departure Time</label>
+      <input type="datetime-local" name="departure_time" required class="mt-1 block w-full px-4 py-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-transform transform hover:scale-105">
+      Search
+    </button>
+  </form>
+</section>
+{% endblock %}

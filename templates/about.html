@@ -1,49 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>About - Travel Buddy NL</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-purple-100 to-blue-200 min-h-screen text-gray-800">
+{% extends 'base.html' %}
 
-    <!-- Navbar -->
-    <nav class="bg-blue-500 p-4 flex justify-between items-center shadow-md sticky top-0 z-10">
-        <h1 class="text-white font-bold text-xl">Travel Buddy NL</h1>
-        <div class="space-x-4">
-            <a href="/" class="text-white hover:underline">Home</a>
-            <a href="/find-trip" class="text-white hover:underline">Find Buddy</a>
-            <a href="/post-trip" class="text-white hover:underline">Post Trip</a>
-            <a href="/about" class="text-white hover:underline">About</a>
-        </div>
-    </nav>
+{% block title %}About Travel Buddy NL{% endblock %}
 
-    <!-- Main Content -->
-    <div class="max-w-3xl mx-auto p-8 mt-10 bg-white rounded-xl shadow-md">
-        <h1 class="text-3xl font-bold mb-4 text-blue-700">About Travel Buddy NL</h1>
-
-        <p class="mb-4">
-            Travel Buddy NL was created to make train travel in the Netherlands more affordable, social, and fun —
-            especially for students, international travelers, and budget-conscious explorers.
-        </p>
-
-        <p class="mb-4">
-            Using the NS Group Ticket system, you can travel for a much lower price when you’re part of a group.
-            Travel Buddy NL helps you match with people going the same way — so you can team up, buy group tickets together, and save.
-        </p>
-
-        <p class="mb-4">
-            Our Smart Matching System shows you exact matches first, then other same-day trips you might consider.
-            Even if the times aren't perfect, there's always someone going your way. 🚆
-        </p>
-
-        <p class="mb-4">
-            Built with love by a student who was tired of paying €25 to cry in another city. ❤️
-        </p>
-
-        <p class="mt-6 font-semibold text-purple-700">Thanks for being part of the journey.  
-            Let’s save together, travel smarter — and never ride alone. 💸
-        </p>
-    </div>
-
-</body>
-</html>
+{% block content %}
+<section class="px-6 pt-20 max-w-3xl mx-auto text-center">
+  <h2 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-300 to-purple-400 mb-6">
+    About Travel Buddy NL
+  </h2>
+  <p class="text-lg text-slate-300 mb-6">
+    This site is created to help travelers in the Netherlands find train buddies to share group tickets with. It's a student-led project made for saving money, meeting new people, and making train rides more fun and affordable. The goal is to connect travelers with similar routes and schedules, especially those using NS trains.
+  </p>
+  <p class="text-md text-slate-400">
+    🚨 Please note: Sharing contact information is entirely voluntary. Misuse of shared data for any purpose outside of travel coordination may result in serious consequences including bans or legal actions.
+  </p>
+</section>
+{% endblock %}
