@@ -1,67 +1,57 @@
-{% extends 'base.html' %}
+@app.route('/find-trip', methods=['GET', 'POST'])
+def find_trip():
+    if request.method == 'POST':
+        departure = request.form['departure_station']
+        arrival = request.form['arrival_station']
+        requested_time = datetime.fromisoformat(request.form['departure_time'])
 
-{% block title %}Find a Travel Buddy{% endblock %}
+        conn = sqlite3.connect('trips.db')
+        c = conn.cursor()
+        c.execute('SELECT departure_station, arrival_station, departure_time, nickname, contact_info FROM trips')
+        trips = c.fetchall()
+        conn.close()
 
-{% block content %}
-<section class="flex flex-col items-center justify-center text-center px-6 pt-20">
-  <h2 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-300 to-purple-400 mb-8">
-    Find a Travel Buddy
-  </h2>
+        matches = []
+        flexible_matches = []
+        other_matches = []
 
-  <form method="POST" action="/find-trip" class="bg-slate-800 p-8 rounded-xl shadow-xl w-full max-w-md space-y-6">
-    
-    <div class="text-left">
-      <label for="departure_station" class="block text-sm font-medium text-slate-300">Departure Station</label>
-      <select name="departure_station" required class="mt-1 block w-full px-4 py-2 bg-slate-700 text-white rounded-lg">
-        <option value="">Select a station</option>
-        <option>Amsterdam Centraal</option>
-        <option>Utrecht Centraal</option>
-        <option>Rotterdam Centraal</option>
-        <option>The Hague HS</option>
-        <option>Leiden Centraal</option>
-        <option>Eindhoven</option>
-        <option>Maastricht</option>
-        <option>Groningen</option>
-        <option>Zwolle</option>
-        <option>Arnhem Centraal</option>
-        <option>Den Bosch</option>
-        <option>Delft</option>
-        <option>Amersfoort</option>
-        <option>Tilburg</option>
-        <option>Nijmegen</option>
-      </select>
-    </div>
+        for trip in trips:
+            trip_departure, trip_arrival, trip_time_str, nickname, contact_info = trip
+            trip_time = datetime.fromisoformat(trip_time_str)
 
-    <div class="text-left">
-      <label for="arrival_station" class="block text-sm font-medium text-slate-300">Arrival Station</label>
-      <select name="arrival_station" required class="mt-1 block w-full px-4 py-2 bg-slate-700 text-white rounded-lg">
-        <option value="">Select a station</option>
-        <option>Amsterdam Centraal</option>
-        <option>Utrecht Centraal</option>
-        <option>Rotterdam Centraal</option>
-        <option>The Hague HS</option>
-        <option>Leiden Centraal</option>
-        <option>Eindhoven</option>
-        <option>Maastricht</option>
-        <option>Groningen</option>
-        <option>Zwolle</option>
-        <option>Arnhem Centraal</option>
-        <option>Den Bosch</option>
-        <option>Delft</option>
-        <option>Amersfoort</option>
-        <option>Tilburg</option>
-        <option>Nijmegen</option>
-      </select>
-    </div>
+            if trip_departure.lower() == departure.lower() and trip_arrival.lower() == arrival.lower():
+                time_diff = abs((trip_time - requested_time).total_seconds())
 
-    <div class="text-left">
-      <label for="departure_time" class="block text-sm font-medium text-slate-300">Departure Time</label>
-      <input type="datetime-local" name="departure_time" required class="mt-1 block w-full px-4 py-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-    </div>
+                if time_diff <= 1800:  # ±30 minutes
+                    matches.append({
+                        'departure_station': trip_departure,
+                        'arrival_station': trip_arrival,
+                        'departure_time': trip_time.strftime('%Y-%m-%d %H:%M'),
+                        'nickname': nickname,
+                        'contact_info': contact_info
+                    })
+                elif time_diff <= 7200:  # ±2 hours
+                    flexible_matches.append({
+                        'departure_station': trip_departure,
+                        'arrival_station': trip_arrival,
+                        'departure_time': trip_time.strftime('%Y-%m-%d %H:%M'),
+                        'nickname': nickname,
+                        'contact_info': contact_info
+                    })
+                elif trip_time.date() == requested_time.date():
+                    other_matches.append({
+                        'departure_station': trip_departure,
+                        'arrival_station': trip_arrival,
+                        'departure_time': trip_time.strftime('%Y-%m-%d %H:%M'),
+                        'nickname': nickname,
+                        'contact_info': contact_info
+                    })
 
-    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-transform transform hover:scale-105">
-      Search
-    </button>
-  </form>
-</section>
-{% endblock %}
+        return render_template(
+            'match_results.html',
+            matches=matches,
+            flexible_matches=flexible_matches,
+            other_matches=other_matches
+        )
+
+    return render_template('find_trip.html')
